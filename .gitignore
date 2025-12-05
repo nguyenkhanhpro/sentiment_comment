@@ -30,8 +30,6 @@ node_modules/
 token.json
 client_secret.json
 
-# CSV and data outputs
-*.csv
 
 # Flask/temporary files
 instance/
