@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phân Tích Cảm Xúc AI</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Montserrat:wght@700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="background-animation"></div>
+    
+    <div class="container">
+        <!-- Header với gradient đẹp -->
+        <div class="header">
+            <div class="header-glow"></div>
+            <div class="title-wrapper">
+                <div class="title-icon">
+                    <i class="fas fa-brain"></i>
+                </div>
+                <h1>
+                    <span class="gradient-text">AI SENTIMENT ANALYZER</span>
+                    <span class="subtitle">Phân tích cảm xúc thông minh với công nghệ AI</span>
+                </h1>
+            </div>
+            
+            <!-- Model Info Cards -->
+            <div class="model-info-cards">
+                <div class="model-card card-1">
+                    <div class="card-icon">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <div class="card-content">
+                        <div class="card-label">MODEL</div>
+                        <div class="card-value" id="modelName">Logistic Regression</div>
+                    </div>
+                    <div class="card-glow"></div>
+                </div>
+                
+                <div class="model-card card-2">
+                    <div class="card-icon">
+                        <i class="fas fa-bolt"></i>
+                    </div>
+                    <div class="card-content">
+                        <div class="card-label">ACCURACY</div>
+                        <div class="card-value" id="modelAccuracy">Đang tải...</div>
+                    </div>
+                    <div class="card-glow"></div>
+                </div>
+                
+                <div class="model-card card-3">
+                    <div class="card-icon">
+                        <i class="fas fa-calendar-star"></i>
+                    </div>
+                    <div class="card-content">
+                        <div class="card-label">TRAINED DATE</div>
+                        <div class="card-value" id="modelDate">Đang tải...</div>
+                    </div>
+                    <div class="card-glow"></div>
+                </div>
+                
+                <div class="model-card card-4">
+                    <div class="card-icon">
+                        <i class="fas fa-fire"></i>
+                    </div>
+                    <div class="card-content">
+                        <div class="card-label">FEATURES</div>
+                        <div class="card-value">Emoticon AI</div>
+                    </div>
+                    <div class="card-glow"></div>
+                </div>
+            </div>
+            
+            <div class="server-status">
+                <div class="status-dot" id="statusDot"></div>
+                <span>Trạng thái hệ thống: <strong id="serverStatus">Đang kiểm tra...</strong></span>
+            </div>
+        </div>
+
+        <!-- Main Input Area với glassmorphism -->
+        <div class="main-input">
+            <div class="input-header">
+                <div class="input-icon">
+                    <i class="fas fa-keyboard"></i>
+                </div>
+                <div class="input-title">
+                    <h2><i class="fas fa-pencil-alt"></i> NHẬP BÌNH LUẬN</h2>
+                    <p>Nhập bình luận để AI phân tích cảm xúc chính xác</p>
+                </div>
+            </div>
+            
+            <div class="input-wrapper">
+                <div class="textarea-container">
+                    <textarea 
+                        id="commentInput" 
+                        placeholder=" Ví dụ: Sản phẩm này tuyệt vời! Tôi rất hài lòng với chất lượng :)) 
+                        
+💡 Mẹo: Sử dụng emoticon để biểu cảm rõ hơn!
+😊 :) - Cười nhẹ
+😄 :)) - Cười vừa
+🤣 :))) - Cười mạnh
+❤️ <3 - Yêu thích
+😞 :( - Buồn nhẹ"
+                        rows="5"
+                    ></textarea>
+                    <div class="textarea-effects">
+                        <div class="text-glow"></div>
+                    </div>
+                </div>
+                
+                <div class="input-controls">
+                    <div class="char-counter">
+                        <i class="fas fa-text-height"></i>
+                        <span id="charCount">0</span> ký tự
+                    </div>
+                    <div class="shortcut-hint">
+                        <i class="fas fa-keyboard"></i>
+                        Ctrl + Enter để phân tích
+                    </div>
+                </div>
+                
+                <button class="analyze-btn" id="analyzeBtn">
+                    <div class="btn-content">
+                        <div class="btn-icon">
+                            <i class="fas fa-magic"></i>
+                        </div>
+                        <div class="btn-text">
+                            <span class="btn-title">PHÂN TÍCH NGAY</span>
+                            <span class="btn-subtitle">AI sẽ phân tích trong 2 giây</span>
+                        </div>
+                        <div class="btn-arrow">
+                            <i class="fas fa-arrow-right"></i>
+                        </div>
+                    </div>
+                    <div class="btn-glow"></div>
+                    <div class="btn-particles"></div>
+                </button>
+            </div>
+        </div>
+
+        <!-- Loading với animation đẹp -->
+        <div class="loading-container" id="loading">
+            <div class="ai-thinking">
+                <div class="ai-brain">
+                    <i class="fas fa-brain"></i>
+                </div>
+                <div class="thinking-text">
+                    <h3><i class="fas fa-cogs"></i> AI ĐANG PHÂN TÍCH</h3>
+                    <p>Đang xử lý ngôn ngữ và emoticon...</p>
+                </div>
+                <div class="thinking-dots">
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                </div>
+            </div>
+            <div class="loading-bar">
+                <div class="loading-progress"></div>
+            </div>
+        </div>
+
+        <!-- Error Message -->
+        <div class="error-container" id="error">
+            <div class="error-icon">
+                <i class="fas fa-exclamation-circle"></i>
+            </div>
+            <div class="error-content">
+                <h3><i class="fas fa-times-circle"></i> LỖI</h3>
+                <p id="errorMessage"></p>
+            </div>
+            <button class="error-close" onclick="hideError()">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+
+        <!-- Result Area - Hiển thị kết quả -->
+        <div class="result-container" id="result">
+            <div class="result-header">
+                <div class="result-title">
+                    <h2><i class="fas fa-chart-bar"></i> KẾT QUẢ PHÂN TÍCH</h2>
+                    <p>AI đã phân tích thành công cảm xúc từ bình luận</p>
+                </div>
+                <div class="result-badge" id="resultBadge">
+                    <span id="resultLabel">TÍCH CỰC</span>
+                    <div class="badge-glow"></div>
+                </div>
+            </div>
+            
+            <div class="result-content">
+                <!-- Main Sentiment Display -->
+                <div class="sentiment-display">
+                    <div class="sentiment-avatar" id="sentimentAvatar">
+                        <div class="avatar-circle positive">
+                            <i class="fas fa-smile-beam" id="resultIcon"></i>
+                        </div>
+                        <div class="avatar-ring"></div>
+                        <div class="avatar-particles"></div>
+                    </div>
+                    
+                    <div class="sentiment-info">
+                        <div class="confidence-meter">
+                            <div class="meter-label">
+                                <i class="fas fa-bullseye"></i> ĐỘ TIN CẬY
+                            </div>
+                            <div class="meter-value" id="confidence">95.8%</div>
+                            <div class="meter-bar">
+                                <div class="meter-fill" id="confidenceBar"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="sentiment-details">
+                            <div class="detail-item">
+                                <i class="fas fa-heartbeat"></i>
+                                <span>Cường độ cảm xúc: <strong id="intensityLevel">CAO</strong></span>
+                            </div>
+                            <div class="detail-item">
+                                <i class="fas fa-clock"></i>
+                                <span>Thời gian xử lý: <strong>0.8s</strong></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Probability Chart -->
+                <div class="probability-chart">
+                    <div class="chart-header">
+                        <h3><i class="fas fa-chart-pie"></i> BIỂU ĐỒ XÁC SUẤT</h3>
+                        <p>Phân bố xác suất các loại cảm xúc</p>
+                    </div>
+                    
+                    <div class="chart-bars">
+                        <div class="chart-bar negative">
+                            <div class="bar-label">
+                                <i class="fas fa-frown"></i>
+                                <span>TIÊU CỰC</span>
+                            </div>
+                            <div class="bar-container">
+                                <div class="bar-fill" id="probNegative" style="width: 0%">
+                                    <span class="bar-value" id="valNegative">0%</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="chart-bar neutral">
+                            <div class="bar-label">
+                                <i class="fas fa-meh"></i>
+                                <span>TRUNG TÍNH</span>
+                            </div>
+                            <div class="bar-container">
+                                <div class="bar-fill" id="probNeutral" style="width: 0%">
+                                    <span class="bar-value" id="valNeutral">0%</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="chart-bar positive">
+                            <div class="bar-label">
+                                <i class="fas fa-smile"></i>
+                                <span>TÍCH CỰC</span>
+                            </div>
+                            <div class="bar-container">
+                                <div class="bar-fill" id="probPositive" style="width: 0%">
+                                    <span class="bar-value" id="valPositive">0%</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="chart-legend">
+                        <div class="legend-item negative">
+                            <div class="legend-color"></div>
+                            <span>Tiêu cực</span>
+                        </div>
+                        <div class="legend-item neutral">
+                            <div class="legend-color"></div>
+                            <span>Trung tính</span>
+                        </div>
+                        <div class="legend-item positive">
+                            <div class="legend-color"></div>
+                            <span>Tích cực</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Text Processing Info -->
+                <div class="processing-info">
+                    <div class="info-card">
+                        <div class="info-icon">
+                            <i class="fas fa-code"></i>
+                        </div>
+                        <div class="info-content">
+                            <h4><i class="fas fa-terminal"></i> TEXT ĐÃ XỬ LÝ</h4>
+                            <div class="code-box">
+                                <code id="cleanedText">sản phẩm tốt [cười vừa]</code>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="info-card">
+                        <div class="info-icon">
+                            <i class="fas fa-smile-wink"></i>
+                        </div>
+                        <div class="info-content">
+                            <h4><i class="fas fa-robot"></i> AI ĐÃ XỬ LÝ</h4>
+                            <div class="ai-features">
+                                <span class="feature-badge"><i class="fas fa-check"></i> Emoticon</span>
+                                <span class="feature-badge"><i class="fas fa-check"></i> Teen Code</span>
+                                <span class="feature-badge"><i class="fas fa-check"></i> Cường độ</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Examples -->
+        <div class="examples-section">
+            <div class="section-header">
+                <h2><i class="fas fa-bolt"></i> THỬ NHANH VỚI MẪU</h2>
+                <p>Click vào các mẫu dưới để phân tích ngay</p>
+            </div>
+            
+            <div class="example-grid">
+                <div class="example-card" data-text="Sản phẩm quá tuyệt vời! Tôi cực kỳ hài lòng :))">
+                    <div class="example-icon positive">
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <div class="example-content">
+                        <h4>Tích cực mạnh</h4>
+                        <p>Với emoticon cười vừa</p>
+                    </div>
+                    <div class="example-hint">
+                        <i class="fas fa-mouse-pointer"></i>
+                    </div>
+                </div>
+                
+                <div class="example-card" data-text="Thất vọng tràn trề, chất lượng kém :((">
+                    <div class="example-icon negative">
+                        <i class="fas fa-thumbs-down"></i>
+                    </div>
+                    <div class="example-content">
+                        <h4>Tiêu cực rõ</h4>
+                        <p>Với emoticon buồn vừa</p>
+                    </div>
+                    <div class="example-hint">
+                        <i class="fas fa-mouse-pointer"></i>
+                    </div>
+                </div>
+                
+                <div class="example-card" data-text="Ổn, không có gì đặc biệt">
+                    <div class="example-icon neutral">
+                        <i class="fas fa-balance-scale"></i>
+                    </div>
+                    <div class="example-content">
+                        <h4>Trung tính</h4>
+                        <p>Không có emoticon</p>
+                    </div>
+                    <div class="example-hint">
+                        <i class="fas fa-mouse-pointer"></i>
+                    </div>
+                </div>
+                
+                <div class="example-card" data-text="Yêu quá đi! <333 Sản phẩm perfect!">
+                    <div class="example-icon love">
+                        <i class="fas fa-heart"></i>
+                    </div>
+                    <div class="example-content">
+                        <h4>Yêu thích</h4>
+                        <p>Với emoticon tim mạnh</p>
+                    </div>
+                    <div class="example-hint">
+                        <i class="fas fa-mouse-pointer"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Emoticon Guide -->
+        <div class="emoticon-guide">
+            <div class="guide-header">
+                <h2><i class="fas fa-smile-beam"></i> BẢNG EMOTICON AI HIỂU</h2>
+                <p>Click để chèn vào bình luận</p>
+            </div>
+            
+            <div class="emoticon-grid">
+                <div class="emoticon-item" data-emoji=":)">
+                    <div class="emoji-display">:)</div>
+                    <div class="emoji-label">Cười nhẹ</div>
+                    <div class="emoji-tag">[cười_nhẹ]</div>
+                </div>
+                
+                <div class="emoticon-item" data-emoji=":))">
+                    <div class="emoji-display">:))</div>
+                    <div class="emoji-label">Cười vừa</div>
+                    <div class="emoji-tag">[cười_vừa]</div>
+                </div>
+                
+                <div class="emoticon-item" data-emoji=":)))">
+                    <div class="emoji-display">:)))</div>
+                    <div class="emoji-label">Cười mạnh</div>
+                    <div class="emoji-tag">[cười_mạnh]</div>
+                </div>
+                
+                <div class="emoticon-item" data-emoji=":))))">
+                    <div class="emoji-display">:))))</div>
+                    <div class="emoji-label">Rất cười</div>
+                    <div class="emoji-tag">[rất_cười]</div>
+                </div>
+                
+                <div class="emoticon-item" data-emoji=":(">
+                    <div class="emoji-display">:(</div>
+                    <div class="emoji-label">Buồn nhẹ</div>
+                    <div class="emoji-tag">[buồn_nhẹ]</div>
+                </div>
+                
+                <div class="emoticon-item" data-emoji=":((">
+                    <div class="emoji-display">:(</div>
+                    <div class="emoji-label">Buồn vừa</div>
+                    <div class="emoji-tag">[buồn_vừa]</div>
+                </div>
+                
+                <div class="emoticon-item" data-emoji="<3">
+                    <div class="emoji-display"><3</div>
+                    <div class="emoji-label">Tim nhẹ</div>
+                    <div class="emoji-tag">[tim_nhẹ]</div>
+                </div>
+                
+                <div class="emoticon-item" data-emoji="<333">
+                    <div class="emoji-display"><333</div>
+                    <div class="emoji-label">Tim mạnh</div>
+                    <div class="emoji-tag">[tim_mạnh]</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <div class="brand-icon">
+                        <i class="fas fa-brain"></i>
+                    </div>
+                    <div class="brand-text">
+                        <h3>SENTIMENT ANALYZER</h3>
+                        <p>Công nghệ phân tích cảm xúc tiên tiến</p>
+                    </div>
+                </div>
+                
+                <div class="footer-info">
+                    <div class="info-item">
+                        <i class="fas fa-microchip"></i>
+                        <span>Model: Logistic Regression với Emoticon AI</span>
+                    </div>
+                    <div class="info-item">
+                        <i class="fas fa-database"></i>
+                        <span>Dữ liệu huấn luyện: <span id="trainingSamples">31,419</span> mẫu</span>
+                    </div>
+                    <div class="info-item">
+                        <i class="fas fa-bolt"></i>
+                        <span>Thời gian xử lý: < 1 giây</span>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+
+    <!-- Floating Elements -->
+    <div class="floating-elements">
+        <div class="floating-1"><i class="fas fa-star"></i></div>
+        <div class="floating-2"><i class="fas fa-heart"></i></div>
+        <div class="floating-3"><i class="fas fa-smile"></i></div>
+        <div class="floating-4"><i class="fas fa-bolt"></i></div>
+    </div>
+
+    <script src="/static/js/app.js"></script>
+</body>
+</html>

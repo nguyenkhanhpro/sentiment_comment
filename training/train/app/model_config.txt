@@ -1,0 +1,23 @@
+Model trained with emoticon intensity processing (DAU CACH)
+Date: 2025-12-05 16:04:32.756501
+Test set accuracy: 0.7185
+Training samples: 25135
+Test samples: 6284
+Features: 5000
+Model saved in: E:\university\Data mining\project A\training\train\app
+
+EMOTICON INTENSITY TAGS:
+  :) -> [cười nhẹ] (weight=1)
+  :)) -> [cười vừa] (weight=2)
+  :))) -> [cười mạnh] (weight=3)
+  :))))+ -> [rất cười] (weight=3)
+  :( -> [buồn nhẹ] (weight=1)
+  :(( -> [buồn vừa] (weight=2)
+  :((( -> [buồn mạnh] (weight=3)
+  :((((+ -> [rất buồn] (weight=3)
+  <3 -> [tim nhẹ] (weight=1)
+  <33 -> [tim vừa] (weight=2)
+  <333+ -> [tim mạnh] (weight=3)
+  :D -> [cười to nhẹ] (weight=1)
+  :DD -> [cười to vừa] (weight=2)
+  :DDD+ -> [cười to mạnh] (weight=3)
