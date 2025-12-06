@@ -181,7 +181,3 @@ Bạn có thể yêu cầu:
 - Lấy đầy đủ replies bằng `comments.list` với `parentId` (để vượt hạn chế của `replies` trong `commentThreads`).
 - Tự động loại trùng lặp trước khi ghi.
 - Bộ lọc theo từ khóa hoặc độ dài bình luận.
-
-## 11) Liên hệ/Hỗ trợ
-
-mọi vấn đề gặp phải xin vui lòng lòng liên hệ vào địa chỉ tinhvu2k4@gmail.com
