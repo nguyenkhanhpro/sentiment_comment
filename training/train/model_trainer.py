@@ -16,7 +16,7 @@ def train_model_from_preprocessed_data():
     # 1. Đọc dữ liệu đã tiền xử lý
     print("\n1. Doc du lieu da tien xu ly...")
     
-    possible_files = 'preprocessed_data_model.csv' 
+    possible_files = ['preprocessed_data_model.csv'] 
 
     
     data_file = None
