@@ -5,7 +5,6 @@ from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import classification_report, accuracy_score
 import os
-from preprocessor import clean_text_with_intensity
 from underthesea import word_tokenize
 
 def train_model_from_preprocessed_data():
@@ -16,8 +15,7 @@ def train_model_from_preprocessed_data():
     # 1. Đọc dữ liệu đã tiền xử lý
     print("\n1. Doc du lieu da tien xu ly...")
     
-    possible_files = ['preprocessed_data_model.csv'] 
-
+    possible_files = ['preprocessed_data_no_emoticon.csv', 'preprocessed_data_model.csv'] 
     
     data_file = None
     for file in possible_files:
@@ -34,7 +32,7 @@ def train_model_from_preprocessed_data():
     df = pd.read_csv(data_file)
     
     # Kiểm tra các cột cần thiết
-    required_columns = ['tokenized', 'sentiment']
+    required_columns = ['sentiment', 'comments']
     missing_columns = [col for col in required_columns if col not in df.columns]
     
     if missing_columns:
@@ -47,7 +45,7 @@ def train_model_from_preprocessed_data():
     
     # 2. Chia train/test
     print("\n2. Chia du lieu train/test...")
-    X = df['tokenized'].values
+    X = df['comments'].values
     y = df['sentiment'].values
     
     X_train, X_test, y_train, y_test = train_test_split(
@@ -95,7 +93,7 @@ def train_model_from_preprocessed_data():
     
     # Tính accuracy
     acc = accuracy_score(y_test, y_pred)
-    print(f"   Accuracy = {acc:.4f}")
+    print(f" Accuracy = {acc:.4f}")
     
     # Classification report
     print("\nClassification Report:")
@@ -109,8 +107,8 @@ def train_model_from_preprocessed_data():
     script_dir = os.path.dirname(os.path.abspath(__file__))
     app_folder_path = os.path.join(script_dir, 'app')
     
-    print(f"   Script directory: {script_dir}")
-    print(f"   App folder path: {app_folder_path}")
+    print(f" Script directory: {script_dir}")
+    print(f" App folder path: {app_folder_path}")
     
     # Tạo folder app nếu chưa tồn tại
     if not os.path.exists(app_folder_path):
@@ -132,67 +130,52 @@ def train_model_from_preprocessed_data():
     # Lưu config
     config_path = os.path.join(app_folder_path, 'model_config.txt')
     with open(config_path, 'w', encoding='utf-8') as f:
-        f.write(f"Model trained with emoticon intensity processing (DAU CACH)\n")
+        f.write(f"Model trained WITHOUT emoticon processing\n")
         f.write(f"Date: {pd.Timestamp.now()}\n")
         f.write(f"Test set accuracy: {acc:.4f}\n")
         f.write(f"Training samples: {len(X_train)}\n")
         f.write(f"Test samples: {len(X_test)}\n")
         f.write(f"Features: {X_train_tfidf.shape[1]}\n")
         f.write(f"Model saved in: {app_folder_path}\n")
-        f.write(f"\nEMOTICON INTENSITY TAGS:\n")
-        f.write(f"  :) -> [cười nhẹ] (weight=1)\n")
-        f.write(f"  :)) -> [cười vừa] (weight=2)\n")
-        f.write(f"  :))) -> [cười mạnh] (weight=3)\n")
-        f.write(f"  :))))+ -> [rất cười] (weight=3)\n")
-        f.write(f"  :( -> [buồn nhẹ] (weight=1)\n")
-        f.write(f"  :(( -> [buồn vừa] (weight=2)\n")
-        f.write(f"  :((( -> [buồn mạnh] (weight=3)\n")
-        f.write(f"  :((((+ -> [rất buồn] (weight=3)\n")
-        f.write(f"  <3 -> [tim nhẹ] (weight=1)\n")
-        f.write(f"  <33 -> [tim vừa] (weight=2)\n")
-        f.write(f"  <333+ -> [tim mạnh] (weight=3)\n")
-        f.write(f"  :D -> [cười to nhẹ] (weight=1)\n")
-        f.write(f"  :DD -> [cười to vừa] (weight=2)\n")
-        f.write(f"  :DDD+ -> [cười to mạnh] (weight=3)\n")
     
     print(f" Luu config: {config_path}")
     
-    # 7. Test model với các trường hợp đặc biệt
-    print("\n7. Test model voi cac truong hop dac biet...")
+    # 7. Test model với các trường hợp đặc biệt (BỎ EMOTICON)
+    print("\n7. Test model voi cac truong hop dac biet (KHONG EMOTICON)...")
     
     test_cases = [
-        ("Tốt :)", 2),
-        ("Rất tốt :))", 2),
-        ("Xuất sắc :)))", 2),
-        ("Tuyệt vời :))))", 2),
-        ("Tệ :(", 0),
-        ("Rất tệ :((", 0),
-        ("Khủng khiếp :(((", 0),
-        ("Thảm họa :((((", 0),
-        ("Yêu <3", 2),
-        ("Rất yêu <33", 2),
-        ("Yêu cực <333", 2),
-        ("Tốt :D", 2),
-        ("Rất tốt :DD", 2),
-        ("Xuất sắc :DDD", 2),
         ("Sản phẩm tốt", 2),
+        ("Sản phẩm rất tốt", 2),
+        ("Sản phẩm xuất sắc", 2),
+        ("Sản phẩm tuyệt vời", 2),
         ("Sản phẩm tệ", 0),
+        ("Sản phẩm rất tệ", 0),
+        ("Sản phẩm khủng khiếp", 0),
+        ("Sản phẩm thảm họa", 0),
+        ("Sản phẩm yêu thích", 2),
+        ("Sản phẩm rất yêu", 2),
+        ("Sản phẩm rất hài lòng", 2),
+        ("Sản phẩm tốt lắm", 2),
+        ("Sản phẩm rất tốt lắm", 2),
+        ("Sản phẩm xuất sắc quá", 2),
         ("Sản phẩm bình thường", 1),
+        ("Sản phẩm tạm được", 1),
+        ("Sản phẩm không tốt", 0),
+        ("Sản phẩm không ổn", 0),
     ]
     
     label_names = ['Tieu cuc', 'Trung tinh', 'Tich cuc']
     
     print("\n" + "=" * 70)
-    print("KET QUA TEST EMOTICON CUONG DO (DAU CACH)")
+    print("KET QUA TEST TEXT THUAN")
     print("=" * 70)
     
     correct = 0
     total = len(test_cases)
     
     for i, (text, expected) in enumerate(test_cases, 1):
-        # Clean và tokenize
-        cleaned = clean_text_with_intensity(text, None, 'balanced')
-        tokenized = ' '.join(word_tokenize(cleaned))
+        # Đơn giản chỉ cần tokenize
+        tokenized = ' '.join(word_tokenize(text.lower()))
         
         # Vectorize và predict
         vectorized = vectorizer.transform([tokenized])
@@ -206,8 +189,8 @@ def train_model_from_preprocessed_data():
         
         result_symbol = "YES" if is_correct else "NO"
         print(f"\n{i:2d}. {result_symbol} '{text}'")
-        print(f"   -> Du doan: {label_names[pred]} (xac suat: {max(proba):.2%})")
-        print(f"   -> Ky vong: {label_names[expected]}")
+        print(f" Du doan: {label_names[pred]} (xac suat: {max(proba):.2%})")
+        print(f" Ky vong: {label_names[expected]}")
     
     accuracy_rate = correct/total*100
     print(f"\nKet qua: {correct}/{total} ({accuracy_rate:.1f}%)")
@@ -216,7 +199,7 @@ def train_model_from_preprocessed_data():
     print("\n" + "=" * 70)
     print("TONG KET")
     print("=" * 70)
-    print(f"Model: Logistic Regression voi Emoticon Cuong Do")
+    print(f"Model: Logistic Regression")
     print(f"Accuracy tren test set: {acc:.4f}")
     print(f"Accuracy tren vi du test: {correct}/{total} ({accuracy_rate:.1f}%)")
     print(f"Models da duoc luu vao: {app_folder_path}/")

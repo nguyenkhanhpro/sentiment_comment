@@ -303,7 +303,7 @@ if __name__ == "__main__":
     processor = EmojiSentimentProcessor('emoji_sentiment_labeled.csv', emoji_weight=0.3)
     
     # Test với các emoji cụ thể từ data của bạn
-    print("\n📊 Test các emoji từ file:")
+    print("\nTest các emoji từ file:")
     test_emojis = [
         ('😂', 0.221, 2),   # positive
         ('❤', 0.746, 2),    # very positive

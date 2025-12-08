@@ -295,6 +295,53 @@ h1 {
     position: relative;
 }
 
+/* Shortcut hint on top of textarea */
+.shortcut-hint-top {
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(139, 92, 246, 0.1));
+    border: 1px solid rgba(139, 92, 246, 0.3);
+    border-radius: 10px;
+    padding: 12px 20px;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.shortcut-hint-top:hover {
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.2), rgba(139, 92, 246, 0.2));
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(139, 92, 246, 0.2);
+}
+
+.shortcut-hint-top i:first-child {
+    color: #8b5cf6;
+    font-size: 18px;
+}
+
+.shortcut-hint-top span {
+    flex: 1;
+}
+
+.shortcut-hint-top i:last-child {
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 14px;
+}
+
+.shortcut-hint-top kbd {
+    background: linear-gradient(135deg, #6366f1, #8b5cf6);
+    color: white;
+    padding: 4px 8px;
+    border-radius: 6px;
+    font-family: 'Consolas', monospace;
+    font-size: 12px;
+    margin: 0 3px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
 .textarea-container {
     position: relative;
     margin-bottom: 20px;
@@ -1082,74 +1129,6 @@ textarea:focus {
     font-size: 18px;
 }
 
-/* ========== EMOTICON GUIDE ========== */
-.emoticon-guide {
-    background: rgba(255, 255, 255, 0.05);
-    border-radius: 20px;
-    padding: 30px;
-    margin-bottom: 30px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.guide-header {
-    text-align: center;
-    margin-bottom: 30px;
-}
-
-.guide-header h2 {
-    font-family: 'Montserrat', sans-serif;
-    font-size: 28px;
-    margin-bottom: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-}
-
-.guide-header p {
-    color: rgba(255, 255, 255, 0.7);
-}
-
-.emoticon-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-    gap: 15px;
-}
-
-.emoticon-item {
-    background: rgba(255, 255, 255, 0.05);
-    border-radius: 12px;
-    padding: 20px;
-    text-align: center;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.emoticon-item:hover {
-    transform: translateY(-3px);
-    background: rgba(255, 255, 255, 0.1);
-    border-color: rgba(99, 102, 241, 0.5);
-}
-
-.emoji-display {
-    font-size: 32px;
-    margin-bottom: 10px;
-    font-weight: 600;
-}
-
-.emoji-label {
-    font-size: 14px;
-    font-weight: 600;
-    margin-bottom: 5px;
-}
-
-.emoji-tag {
-    font-size: 12px;
-    color: rgba(255, 255, 255, 0.5);
-    font-family: 'Consolas', monospace;
-}
-
 /* ========== FOOTER ========== */
 .footer {
     background: rgba(255, 255, 255, 0.05);
@@ -1260,10 +1239,6 @@ textarea:focus {
     .example-grid {
         grid-template-columns: 1fr;
     }
-    
-    .emoticon-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
 }
 
 @media (max-width: 480px) {
@@ -1271,7 +1246,7 @@ textarea:focus {
         padding: 10px;
     }
     
-    .header, .main-input, .result-container, .examples-section, .emoticon-guide, .footer {
+    .header, .main-input, .result-container, .examples-section, .footer {
         padding: 20px;
     }
     
@@ -1294,4 +1269,867 @@ textarea:focus {
     .meter-value {
         font-size: 32px;
     }
+}
+/* ========== EMOJI COUNTER ========== */
+.emoji-counter {
+    margin-left: 15px;
+    padding: 2px 8px;
+    background: rgba(139, 92, 246, 0.2);
+    border-radius: 10px;
+    font-size: 12px;
+    color: #8b5cf6;
+}
+
+.emoji-status {
+    margin-left: 15px;
+    padding: 2px 10px;
+    background: rgba(16, 185, 129, 0.2);
+    border-radius: 10px;
+    font-size: 12px;
+    color: #10b981;
+}
+
+/* ========== EMOJI EFFECT NOTICE ========== */
+.emoji-effect-notice {
+    display: none;
+    background: linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(99, 102, 241, 0.05));
+    border: 1px solid rgba(139, 92, 246, 0.3);
+    border-radius: 15px;
+    padding: 20px;
+    margin-bottom: 25px;
+    align-items: center;
+    gap: 20px;
+    animation: fadeIn 0.5s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.emoji-effect-icon {
+    width: 60px;
+    height: 60px;
+    background: linear-gradient(135deg, #8b5cf6, #a78bfa);
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    color: white;
+}
+
+.emoji-effect-content {
+    flex: 1;
+}
+
+.emoji-effect-content h4 {
+    font-size: 16px;
+    margin-bottom: 5px;
+    color: #8b5cf6;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.emoji-effect-stats {
+    display: flex;
+    gap: 20px;
+}
+
+.emoji-stat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+}
+
+.emoji-stat i {
+    color: #8b5cf6;
+    font-size: 18px;
+}
+
+.emoji-stat span {
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+/* ========== EMOJI ANALYSIS DETAILS ========== */
+.emoji-analysis-details {
+    margin-top: 15px;
+    padding: 10px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+    font-size: 14px;
+}
+
+.emoji-analysis-details p {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.emoji-details-container {
+    display: none;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 15px;
+    padding: 25px;
+    margin-top: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.emoji-details-header {
+    margin-bottom: 20px;
+}
+
+.emoji-details-header h3 {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 20px;
+    margin-bottom: 5px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #8b5cf6;
+}
+
+.emoji-details-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: 15px;
+}
+
+.no-emoji-message {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 40px;
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.no-emoji-message i {
+    font-size: 48px;
+    margin-bottom: 15px;
+    display: block;
+}
+
+.emoji-detail-card {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    padding: 20px;
+    text-align: center;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.emoji-detail-card.positive {
+    border-color: rgba(16, 185, 129, 0.3);
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), transparent);
+}
+
+.emoji-detail-card.negative {
+    border-color: rgba(239, 68, 68, 0.3);
+    background: linear-gradient(135deg, rgba(239, 68, 68, 0.1), transparent);
+}
+
+.emoji-detail-card.neutral {
+    border-color: rgba(245, 158, 11, 0.3);
+    background: linear-gradient(135deg, rgba(245, 158, 11, 0.1), transparent);
+}
+
+.emoji-detail-display {
+    font-size: 32px;
+    margin-bottom: 10px;
+}
+
+.emoji-detail-name {
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+
+.emoji-detail-score {
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.7);
+    margin-bottom: 5px;
+}
+
+.emoji-detail-label {
+    font-size: 12px;
+    padding: 3px 8px;
+    border-radius: 10px;
+    display: inline-block;
+}
+
+.emoji-detail-label.positive {
+    background: rgba(16, 185, 129, 0.2);
+    color: #10b981;
+}
+
+.emoji-detail-label.negative {
+    background: rgba(239, 68, 68, 0.2);
+    color: #ef4444;
+}
+
+.emoji-detail-label.neutral {
+    background: rgba(245, 158, 11, 0.2);
+    color: #f59e0b;
+}
+
+/* ========== EMOJI GUIDE ========== */
+.emoji-guide {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 20px;
+    padding: 30px;
+    margin-bottom: 30px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.guide-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.guide-header h2 {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 28px;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.guide-header p {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.emoji-guide-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 25px;
+}
+
+.guide-category {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 15px;
+    padding: 20px;
+}
+
+.guide-category h3 {
+    font-size: 16px;
+    margin-bottom: 15px;
+    color: rgba(255, 255, 255, 0.9);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.guide-emoji-list {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.guide-emoji-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+    padding: 10px;
+    border-radius: 10px;
+    transition: all 0.3s ease;
+    min-width: 70px;
+}
+
+.guide-emoji-item:hover {
+    background: rgba(255, 255, 255, 0.1);
+    transform: translateY(-3px);
+}
+
+.emoji-display {
+    font-size: 28px;
+    margin-bottom: 8px;
+}
+
+.emoji-name {
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.guide-emoji-item.positive-strong {
+    border: 2px solid rgba(16, 185, 129, 0.5);
+}
+
+.guide-emoji-item.positive-medium {
+    border: 2px solid rgba(16, 185, 129, 0.3);
+}
+
+.guide-emoji-item.negative-medium {
+    border: 2px solid rgba(239, 68, 68, 0.3);
+}
+
+.guide-emoji-item.negative-strong {
+    border: 2px solid rgba(239, 68, 68, 0.5);
+}
+
+.guide-footer {
+    margin-top: 25px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    text-align: center;
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 14px;
+}
+
+.guide-footer i {
+    color: #6366f1;
+    margin-right: 8px;
+}
+
+/* ========== EMOJI TOOLTIP ========== */
+.emoji-tooltip {
+    display: none;
+    position: fixed;
+    background: rgba(30, 30, 40, 0.95);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(139, 92, 246, 0.3);
+    border-radius: 12px;
+    padding: 15px;
+    z-index: 10000;
+    min-width: 200px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    animation: tooltipFadeIn 0.2s ease;
+}
+
+@keyframes tooltipFadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.tooltip-content {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.tooltip-emoji {
+    font-size: 36px;
+}
+
+.tooltip-info h4 {
+    font-size: 16px;
+    margin-bottom: 5px;
+    color: white;
+}
+
+.tooltip-info p {
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.7);
+    margin-bottom: 3px;
+}
+
+.tooltip-arrow {
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-top: 10px solid rgba(139, 92, 246, 0.3);
+}
+
+.positive-label {
+    color: #10b981;
+}
+
+.negative-label {
+    color: #ef4444;
+}
+
+.neutral-label {
+    color: #f59e0b;
+}
+
+/* ========== FLOATING EMOJIS ========== */
+.floating-elements .floating-5,
+.floating-elements .floating-6,
+.floating-elements .floating-7,
+.floating-elements .floating-8 {
+    font-size: 28px;
+    opacity: 0.08;
+}
+
+.floating-5 { top: 15%; right: 10%; animation-delay: 2s; }
+.floating-6 { top: 25%; left: 15%; animation-delay: 7s; }
+.floating-7 { bottom: 35%; right: 20%; animation-delay: 12s; }
+.floating-8 { bottom: 25%; left: 25%; animation-delay: 17s; }
+
+/* ========== RESPONSIVE UPDATES ========== */
+@media (max-width: 768px) {
+    .emoji-guide-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .emoji-details-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .emoji-effect-notice {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .emoji-effect-stats {
+        justify-content: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .emoji-details-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .guide-emoji-list {
+        justify-content: center;
+    }
+}
+
+/* ========== KEYBOARD SHORTCUTS ========== */
+/* Nút phím tắt to, nổi bật */
+.shortcuts-hint-btn {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    width: auto;
+    height: 60px;
+    background: linear-gradient(135deg, #ff6b6b, #ff4757);
+    border: none;
+    border-radius: 15px;
+    color: white;
+    font-size: 18px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    z-index: 1000;
+    box-shadow: 0 10px 25px rgba(255, 107, 107, 0.4);
+    transition: all 0.3s ease;
+    padding: 0 25px;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+.shortcuts-hint-btn:hover {
+    transform: scale(1.1) rotate(2deg);
+    box-shadow: 0 15px 30px rgba(255, 107, 107, 0.6);
+    background: linear-gradient(135deg, #ff4757, #ff6b6b);
+}
+
+.shortcuts-hint-text {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    font-size: 16px;
+}
+
+/* Shortcut watermark */
+.shortcuts-watermark {
+    position: fixed;
+    bottom: 100px;
+    right: 30px;
+    background: rgba(139, 92, 246, 0.15);
+    backdrop-filter: blur(5px);
+    border: 1px solid rgba(139, 92, 246, 0.3);
+    border-radius: 15px;
+    padding: 8px 15px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.8);
+    cursor: pointer;
+    z-index: 999;
+    transition: all 0.3s ease;
+}
+
+.shortcuts-watermark:hover {
+    background: rgba(139, 92, 246, 0.25);
+    transform: translateX(-5px);
+}
+
+.shortcuts-watermark i {
+    color: #8b5cf6;
+    font-size: 14px;
+}
+
+/* Shortcuts Modal */
+.shortcuts-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(10px);
+    z-index: 2000;
+    align-items: center;
+    justify-content: center;
+    animation: modalFadeIn 0.3s ease;
+}
+
+@keyframes modalFadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.shortcuts-modal-content {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(20px);
+    border-radius: 20px;
+    width: 90%;
+    max-width: 700px;
+    max-height: 90vh;
+    overflow-y: auto;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    animation: modalSlideUp 0.3s ease;
+}
+
+@keyframes modalSlideUp {
+    from { 
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to { 
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.shortcuts-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 25px 30px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.shortcuts-modal-header h2 {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 24px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.shortcuts-close {
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 18px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.shortcuts-close:hover {
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+}
+
+.shortcuts-grid {
+    padding: 30px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+.shortcut-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 15px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: all 0.3s ease;
+}
+
+.shortcut-item:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(99, 102, 241, 0.3);
+    transform: translateY(-3px);
+}
+
+.shortcut-key {
+    flex-shrink: 0;
+}
+
+.shortcut-key kbd {
+    background: linear-gradient(135deg, #6366f1, #8b5cf6);
+    color: white;
+    padding: 8px 15px;
+    border-radius: 8px;
+    font-family: 'Consolas', monospace;
+    font-size: 14px;
+    font-weight: 600;
+    margin: 0 2px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.shortcut-info h4 {
+    font-size: 16px;
+    margin-bottom: 5px;
+    color: white;
+}
+
+.shortcut-info p {
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.7);
+    line-height: 1.5;
+}
+
+.shortcuts-footer {
+    padding: 20px 30px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    text-align: center;
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.shortcuts-footer i {
+    color: #f59e0b;
+    margin-right: 8px;
+}
+
+.shortcuts-footer kbd {
+    background: rgba(245, 158, 11, 0.2);
+    color: #f59e0b;
+    padding: 4px 8px;
+    border-radius: 5px;
+    font-family: 'Consolas', monospace;
+    font-size: 12px;
+    margin: 0 3px;
+}
+
+/* Responsive for shortcuts */
+@media (max-width: 768px) {
+    .shortcuts-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .shortcuts-modal-content {
+        width: 95%;
+        margin: 20px;
+    }
+    
+    .shortcuts-hint-btn {
+        bottom: 20px;
+        right: 20px;
+        width: auto;
+        height: 50px;
+        padding: 0 15px;
+        font-size: 14px;
+    }
+    
+    .shortcuts-watermark {
+        bottom: 80px;
+        right: 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .shortcut-item {
+        flex-direction: column;
+        text-align: center;
+        gap: 15px;
+    }
+    
+    .shortcuts-modal-header {
+        padding: 20px;
+    }
+    
+    .shortcuts-modal-header h2 {
+        font-size: 20px;
+    }
+    
+    .shortcuts-hint-btn {
+        bottom: 15px;
+        right: 15px;
+        height: 45px;
+        padding: 0 12px;
+        font-size: 13px;
+    }
+    
+    .shortcuts-watermark {
+        bottom: 70px;
+        right: 15px;
+        font-size: 12px;
+        padding: 6px 12px;
+    }
+}
+/* Thêm vào cuối file style.css */
+
+/* Debug styles */
+.debug-border {
+    border: 2px solid red !important;
+}
+
+/* Better emoji detail cards */
+.emoji-detail-card {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    padding: 20px;
+    text-align: center;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: all 0.3s ease;
+    min-height: 140px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.emoji-detail-card:hover {
+    transform: translateY(-5px);
+    background: rgba(255, 255, 255, 0.1);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+.emoji-detail-card.positive {
+    border-color: rgba(16, 185, 129, 0.3);
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), transparent);
+}
+
+.emoji-detail-card.negative {
+    border-color: rgba(239, 68, 68, 0.3);
+    background: linear-gradient(135deg, rgba(239, 68, 68, 0.1), transparent);
+}
+
+.emoji-detail-card.neutral {
+    border-color: rgba(245, 158, 11, 0.3);
+    background: linear-gradient(135deg, rgba(245, 158, 11, 0.1), transparent);
+}
+
+.emoji-detail-display {
+    font-size: 32px;
+    margin-bottom: 10px;
+    display: block;
+}
+
+.emoji-detail-name {
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.emoji-detail-score {
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.7);
+    margin-bottom: 8px;
+    font-family: 'Consolas', monospace;
+}
+
+.emoji-detail-label {
+    font-size: 12px;
+    padding: 4px 10px;
+    border-radius: 10px;
+    display: inline-block;
+    font-weight: 600;
+    margin-top: 5px;
+}
+
+.emoji-detail-label.positive {
+    background: rgba(16, 185, 129, 0.2);
+    color: #10b981;
+    border: 1px solid rgba(16, 185, 129, 0.3);
+}
+
+.emoji-detail-label.negative {
+    background: rgba(239, 68, 68, 0.2);
+    color: #ef4444;
+    border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+.emoji-detail-label.neutral {
+    background: rgba(245, 158, 11, 0.2);
+    color: #f59e0b;
+    border: 1px solid rgba(245, 158, 11, 0.3);
+}
+
+/* Update emoji notice */
+.emoji-effect-notice {
+    display: none;
+    background: linear-gradient(135deg, rgba(139, 92, 246, 0.15), rgba(99, 102, 241, 0.08));
+    border: 1px solid rgba(139, 92, 246, 0.4);
+    border-radius: 15px;
+    padding: 20px;
+    margin-bottom: 25px;
+    align-items: center;
+    gap: 20px;
+    animation: fadeIn 0.5s ease;
+}
+
+.emoji-effect-notice.show {
+    display: flex;
+}
+
+.emoji-effect-icon {
+    width: 60px;
+    height: 60px;
+    background: linear-gradient(135deg, #8b5cf6, #a78bfa);
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    color: white;
+    box-shadow: 0 8px 20px rgba(139, 92, 246, 0.3);
+}
+
+.emoji-effect-content h4 {
+    font-size: 16px;
+    margin-bottom: 5px;
+    color: #8b5cf6;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.emoji-effect-stats {
+    display: flex;
+    gap: 20px;
+}
+
+.emoji-stat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    padding: 10px 15px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+    min-width: 80px;
+}
+
+.emoji-stat i {
+    color: #8b5cf6;
+    font-size: 18px;
+}
+
+.emoji-stat span {
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.9);
+    font-weight: 500;
+}
+
+.emoji-stat span strong {
+    color: white;
 }

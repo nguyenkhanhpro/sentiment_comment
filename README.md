@@ -21,25 +21,26 @@ PROJECT A/
 │   │   │   │       └── app.js
 │   │   │   ├── templates/         # HTML templates
 │   │   │   │   └── index.html
+│   │   │   ├── emoji_processor.py     # Xử lý emoji
+│   │   │   ├── model_config.txt       # Cấu hình model
+│   │   │   ├── sentiment_model.pkl    # Model đã train
+│   │   │   ├── tfidf_vectorizer.pkl   # TF-IDF vectorizer
+│   │   │   ├── test_api_simple.py   # Script test API 
+│   │   │   ├── emoji_sentiment_labeled.csv # Data emoji có nhãn
+│   │   │   ├── emoji_processor.py        # Module xử lý emoji   
 │   │   │   └── app.py             # Flask application
-│   │   ├── emoji_processor.py     # Xử lý emoji
-│   │   ├── model_config.txt       # Cấu hình model
-│   │   ├── sentiment_model.pkl    # Model đã train
-│   │   ├── tfidf_vectorizer.pkl   # TF-IDF vectorizer
-│   ├── __init__.py
-│   ├── comments_mapping.csv       # Data Mapping dữ liệu
-│   ├── comments_text_labeled.csv  # Data Dữ liệu có nhãn
-│   ├── comments.csv               # Data Dữ liệu bình luận
-│   ├── emoji_processor.py         # Module xử lý emoji
-│   ├── emoji_sentiment_labeled.csv # Data emoji có nhãn
-│   ├── features_info.txt          # Thông tin features
-│   ├── get_emoji_sentiment.py     # Lấy sentiment từ emoji
-│   ├──main.py                        # File chạy chính
-│   ├──model_test.py                  # Đánh nhãn comment
-│   ├──model_trainer.py               # Huấn luyện model
-│   ├──preprocessed_data_model.csv    # Data đã tiền xử lý
-│   ├──preprocessor.py                # Module tiền xử lý dữ liệu
-│   └──requirements.txt               # Dependencies
+│   │   ├── __init__.py 
+│   │   ├── comments_mapping.csv       # Data Mapping dữ liệu
+│   │   ├── comments_text_labeled.csv  # Data Dữ liệu có nhãn
+│   │   ├── comments.csv               # Data Dữ liệu bình luận
+│   │   ├── features_info.txt          # Thông tin features
+│   │   ├── get_emoji_sentiment.py     # Lấy sentiment từ
+│   │   ├──main.py                        # File chạy chính
+│   │   ├──model_lables.py                  # Đánh nhãn comment
+│   │   ├──model_trainer.py               # Huấn luyện model
+│   │   ├──preprocessed_data_model.csv    # Data đã tiền xử lý
+│   │   ├──preprocessor.py                # Module tiền xử lý dữ liệu
+│   │   └──requirements.txt               # Dependencies
 ├── .gitignore                     # Git ignore file
 ├── a.py                           # Script phụ trợ
 └── Project A.docx                 # Tài liệu dự án
@@ -55,7 +56,7 @@ PROJECT A/
 ### 2. Huấn luyện Model
 
 - `model_trainer.py`: Script huấn luyện model machine learning
-- `model_test.py`: Đánh nhãn comment
+- `model_lables.py`: Đánh nhãn comment
 - `sentiment_model.pkl`: Model đã được huấn luyện
 - `tfidf_vectorizer.pkl`: Vectorizer cho text features
 
@@ -107,10 +108,10 @@ pip install -r requirements.txt
 ### 1. Chạy Lấy dữ liệu với TakeData
 - Đọc file README trong thư mục TakeData để lấy dữ liệu bình luận từ YouTube
 ### 2. Đánh nhãn dữ liệu đã lấy được từ TakeData
-- Sử dụng file `model_test.py` để đánh nhãn dữ liệu bình luận đã lấy được
+- Sử dụng file `model_lables.py` để đánh nhãn dữ liệu bình luận đã lấy được
 ```bash
 cd training/train/
-python model_test.py
+python model_lables.py
 ```
 ### 3. Lấy emoji sentiment và xử lí dữ liệu
 - Dùng file `get_emoji_sentiment.py` để lấy sentiment từ emoji trên trang web và lưu vào file `emoji_sentiment_labeled.csv`

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Phân Tích Cảm Xúc AI</title>
+    <title>Phân Tích Cảm Xúc AI - Với Emoji Analysis</title>
     <link rel="stylesheet" href="/static/css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Montserrat:wght@700;800&display=swap" rel="stylesheet">
@@ -21,7 +21,7 @@
                 </div>
                 <h1>
                     <span class="gradient-text">AI SENTIMENT ANALYZER</span>
-                    <span class="subtitle">Phân tích cảm xúc thông minh với công nghệ AI</span>
+                    <span class="subtitle">Phân tích cảm xúc thông minh với công nghệ AI & Emoji</span>
                 </h1>
             </div>
             
@@ -66,7 +66,7 @@
                     </div>
                     <div class="card-content">
                         <div class="card-label">FEATURES</div>
-                        <div class="card-value">Emoticon AI</div>
+                        <div class="card-value" id="modelFeatures">Text + Emoji AI</div>
                     </div>
                     <div class="card-glow"></div>
                 </div>
@@ -75,6 +75,7 @@
             <div class="server-status">
                 <div class="status-dot" id="statusDot"></div>
                 <span>Trạng thái hệ thống: <strong id="serverStatus">Đang kiểm tra...</strong></span>
+                <span class="emoji-status" id="emojiStatus"></span>
             </div>
         </div>
 
@@ -86,22 +87,31 @@
                 </div>
                 <div class="input-title">
                     <h2><i class="fas fa-pencil-alt"></i> NHẬP BÌNH LUẬN</h2>
-                    <p>Nhập bình luận để AI phân tích cảm xúc chính xác</p>
+                    <p>Nhập bình luận để AI phân tích cảm xúc từ text và emoji</p>
                 </div>
             </div>
             
             <div class="input-wrapper">
+                <!-- Thêm shortcut hint ngay trên ô nhập -->
+                <div class="shortcut-hint-top" onclick="showShortcuts()">
+                    <i class="fas fa-keyboard"></i>
+                    <span>📌 <kbd>Ctrl</kbd> + <kbd>Enter</kbd> để phân tích nhanh • Nhấn <kbd>?</kbd> để xem tất cả phím tắt</span>
+                    <i class="fas fa-chevron-right"></i>
+                </div>
+                
                 <div class="textarea-container">
                     <textarea 
                         id="commentInput" 
-                        placeholder=" Ví dụ: Sản phẩm này tuyệt vời! Tôi rất hài lòng với chất lượng :)) 
-                        
-💡 Mẹo: Sử dụng emoticon để biểu cảm rõ hơn!
-😊 :) - Cười nhẹ
-😄 :)) - Cười vừa
-🤣 :))) - Cười mạnh
-❤️ <3 - Yêu thích
-😞 :( - Buồn nhẹ"
+                        placeholder=" Ví dụ: Sản phẩm này tuyệt vời! Tôi rất hài lòng với chất lượng ❤️😊
+
+💡 Mẹo phím tắt nhanh:
+• Ctrl + Enter = Phân tích ngay
+• Alt + L = Focus vào ô nhập
+• Alt + C = Xóa nội dung
+• Alt + E = Thêm emoji ngẫu nhiên
+• Esc = Đóng thông báo
+
+📝 Nhập bình luận tự nhiên bằng tiếng Việt"
                         rows="5"
                     ></textarea>
                     <div class="textarea-effects">
@@ -113,6 +123,7 @@
                     <div class="char-counter">
                         <i class="fas fa-text-height"></i>
                         <span id="charCount">0</span> ký tự
+                        <span class="emoji-counter" id="emojiCounter">0 emoji</span>
                     </div>
                     <div class="shortcut-hint">
                         <i class="fas fa-keyboard"></i>
@@ -120,14 +131,14 @@
                     </div>
                 </div>
                 
-                <button class="analyze-btn" id="analyzeBtn">
+                <button class="analyze-btn" id="analyzeBtn" title="Hoặc nhấn Ctrl + Enter để phân tích nhanh">
                     <div class="btn-content">
                         <div class="btn-icon">
                             <i class="fas fa-magic"></i>
                         </div>
                         <div class="btn-text">
                             <span class="btn-title">PHÂN TÍCH NGAY</span>
-                            <span class="btn-subtitle">AI sẽ phân tích trong 2 giây</span>
+                            <span class="btn-subtitle">AI phân tích text + emoji trong 2 giây</span>
                         </div>
                         <div class="btn-arrow">
                             <i class="fas fa-arrow-right"></i>
@@ -147,7 +158,7 @@
                 </div>
                 <div class="thinking-text">
                     <h3><i class="fas fa-cogs"></i> AI ĐANG PHÂN TÍCH</h3>
-                    <p>Đang xử lý ngôn ngữ và emoticon...</p>
+                    <p id="loadingText">Đang xử lý ngôn ngữ và phân tích văn bản...</p>
                 </div>
                 <div class="thinking-dots">
                     <div class="dot"></div>
@@ -179,11 +190,32 @@
             <div class="result-header">
                 <div class="result-title">
                     <h2><i class="fas fa-chart-bar"></i> KẾT QUẢ PHÂN TÍCH</h2>
-                    <p>AI đã phân tích thành công cảm xúc từ bình luận</p>
+                    <p>AI đã phân tích thành công cảm xúc từ text và emoji</p>
                 </div>
                 <div class="result-badge" id="resultBadge">
                     <span id="resultLabel">TÍCH CỰC</span>
                     <div class="badge-glow"></div>
+                </div>
+            </div>
+            
+            <!-- Emoji Effect Notice -->
+            <div class="emoji-effect-notice" id="emojiEffectNotice">
+                <div class="emoji-effect-icon">
+                    <i class="fas fa-smile-beam"></i>
+                </div>
+                <div class="emoji-effect-content">
+                    <h4><i class="fas fa-star"></i> EMOJI ĐÃ ẢNH HƯỞNG KẾT QUẢ</h4>
+                    <p>Emoji trong bình luận đã được phân tích và kết hợp với text</p>
+                </div>
+                <div class="emoji-effect-stats">
+                    <div class="emoji-stat">
+                        <i class="fas fa-hashtag"></i>
+                        <span id="emojiCountResult">0 emoji</span>
+                    </div>
+                    <div class="emoji-stat">
+                        <i class="fas fa-chart-line"></i>
+                        <span id="emojiScoreResult">Score: 0.0</span>
+                    </div>
                 </div>
             </div>
             
@@ -216,7 +248,11 @@
                             </div>
                             <div class="detail-item">
                                 <i class="fas fa-clock"></i>
-                                <span>Thời gian xử lý: <strong>0.8s</strong></span>
+                                <span>Thời gian xử lý: <strong id="processingTime">0.8s</strong></span>
+                            </div>
+                            <div class="detail-item">
+                                <i class="fas fa-smile-wink"></i>
+                                <span>Emoji ảnh hưởng: <strong id="emojiImpact">Có</strong></span>
                             </div>
                         </div>
                     </div>
@@ -226,7 +262,7 @@
                 <div class="probability-chart">
                     <div class="chart-header">
                         <h3><i class="fas fa-chart-pie"></i> BIỂU ĐỒ XÁC SUẤT</h3>
-                        <p>Phân bố xác suất các loại cảm xúc</p>
+                        <p>Phân bố xác suất các loại cảm xúc (kết hợp text + emoji)</p>
                     </div>
                     
                     <div class="chart-bars">
@@ -292,7 +328,7 @@
                         <div class="info-content">
                             <h4><i class="fas fa-terminal"></i> TEXT ĐÃ XỬ LÝ</h4>
                             <div class="code-box">
-                                <code id="cleanedText">sản phẩm tốt [cười vừa]</code>
+                                <code id="cleanedText">sản phẩm tốt</code>
                             </div>
                         </div>
                     </div>
@@ -304,10 +340,29 @@
                         <div class="info-content">
                             <h4><i class="fas fa-robot"></i> AI ĐÃ XỬ LÝ</h4>
                             <div class="ai-features">
-                                <span class="feature-badge"><i class="fas fa-check"></i> Emoticon</span>
-                                <span class="feature-badge"><i class="fas fa-check"></i> Teen Code</span>
-                                <span class="feature-badge"><i class="fas fa-check"></i> Cường độ</span>
+                                <span class="feature-badge"><i class="fas fa-check"></i> Text Analysis</span>
+                                <span class="feature-badge"><i class="fas fa-check"></i> Emoji AI</span>
+                                <span class="feature-badge"><i class="fas fa-check"></i> Natural Language</span>
+                                <span class="feature-badge"><i class="fas fa-check"></i> Sentiment Fusion</span>
                             </div>
+                            <div class="emoji-analysis-details" id="emojiDetails">
+                                <p><i class="fas fa-info-circle"></i> Không có emoji trong bình luận</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Emoji Analysis Details -->
+                <div class="emoji-details-container" id="emojiDetailsContainer">
+                    <div class="emoji-details-header">
+                        <h3><i class="fas fa-smile-beam"></i> CHI TIẾT PHÂN TÍCH EMOJI</h3>
+                        <p>Thông tin chi tiết về từng emoji trong bình luận</p>
+                    </div>
+                    <div class="emoji-details-grid" id="emojiDetailsGrid">
+                        <!-- Sẽ được thêm bằng JavaScript -->
+                        <div class="no-emoji-message">
+                            <i class="fas fa-smile"></i>
+                            <p>Không có emoji trong bình luận này</p>
                         </div>
                     </div>
                 </div>
@@ -322,26 +377,26 @@
             </div>
             
             <div class="example-grid">
-                <div class="example-card" data-text="Sản phẩm quá tuyệt vời! Tôi cực kỳ hài lòng :))">
+                <div class="example-card" data-text="Sản phẩm quá tuyệt vời! Tôi cực kỳ hài lòng ❤️">
                     <div class="example-icon positive">
                         <i class="fas fa-star"></i>
                     </div>
                     <div class="example-content">
                         <h4>Tích cực mạnh</h4>
-                        <p>Với emoticon cười vừa</p>
+                        <p>Với emoji trái tim tích cực</p>
                     </div>
                     <div class="example-hint">
                         <i class="fas fa-mouse-pointer"></i>
                     </div>
                 </div>
                 
-                <div class="example-card" data-text="Thất vọng tràn trề, chất lượng kém :((">
+                <div class="example-card" data-text="Thất vọng tràn trề, chất lượng kém 😭">
                     <div class="example-icon negative">
                         <i class="fas fa-thumbs-down"></i>
                     </div>
                     <div class="example-content">
                         <h4>Tiêu cực rõ</h4>
-                        <p>Với emoticon buồn vừa</p>
+                        <p>Với emoji khóc tiêu cực</p>
                     </div>
                     <div class="example-hint">
                         <i class="fas fa-mouse-pointer"></i>
@@ -354,20 +409,46 @@
                     </div>
                     <div class="example-content">
                         <h4>Trung tính</h4>
-                        <p>Không có emoticon</p>
+                        <p>Không có emoji</p>
                     </div>
                     <div class="example-hint">
                         <i class="fas fa-mouse-pointer"></i>
                     </div>
                 </div>
                 
-                <div class="example-card" data-text="Yêu quá đi! <333 Sản phẩm perfect!">
+                <div class="example-card" data-text="Yêu quá đi! 😍 Sản phẩm perfect!">
                     <div class="example-icon love">
                         <i class="fas fa-heart"></i>
                     </div>
                     <div class="example-content">
-                        <h4>Yêu thích</h4>
-                        <p>Với emoticon tim mạnh</p>
+                        <h4>Yêu thích mạnh</h4>
+                        <p>Với emoji yêu tích cực</p>
+                    </div>
+                    <div class="example-hint">
+                        <i class="fas fa-mouse-pointer"></i>
+                    </div>
+                </div>
+                
+                <div class="example-card" data-text="Sản phẩm tốt, giao hàng nhanh 👍">
+                    <div class="example-icon positive">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <div class="example-content">
+                        <h4>Tích cực vừa</h4>
+                        <p>Với emoji like tích cực</p>
+                    </div>
+                    <div class="example-hint">
+                        <i class="fas fa-mouse-pointer"></i>
+                    </div>
+                </div>
+                
+                <div class="example-card" data-text="Tệ! 😡 Lừa đảo">
+                    <div class="example-icon negative">
+                        <i class="fas fa-angry"></i>
+                    </div>
+                    <div class="example-content">
+                        <h4>Tiêu cực mạnh</h4>
+                        <p>Với emoji giận tiêu cực</p>
                     </div>
                     <div class="example-hint">
                         <i class="fas fa-mouse-pointer"></i>
@@ -376,61 +457,89 @@
             </div>
         </div>
 
-        <!-- Emoticon Guide -->
-        <div class="emoticon-guide">
+        <!-- Emoji Guide -->
+        <div class="emoji-guide">
             <div class="guide-header">
-                <h2><i class="fas fa-smile-beam"></i> BẢNG EMOTICON AI HIỂU</h2>
-                <p>Click để chèn vào bình luận</p>
+                <h2><i class="fas fa-smile-beam"></i> EMOJI PHỔ BIẾN & SENTIMENT</h2>
+                <p>Click để xem thông tin sentiment của emoji</p>
             </div>
             
-            <div class="emoticon-grid">
-                <div class="emoticon-item" data-emoji=":)">
-                    <div class="emoji-display">:)</div>
-                    <div class="emoji-label">Cười nhẹ</div>
-                    <div class="emoji-tag">[cười_nhẹ]</div>
+            <div class="emoji-guide-grid">
+                <div class="guide-category">
+                    <h3><i class="fas fa-laugh-beam"></i> TÍCH CỰC MẠNH</h3>
+                    <div class="guide-emoji-list">
+                        <div class="guide-emoji-item positive-strong" data-emoji="😍" data-info="Score: 0.678 (Very Positive)">
+                            <span class="emoji-display">😍</span>
+                            <span class="emoji-name">Yêu</span>
+                        </div>
+                        <div class="guide-emoji-item positive-strong" data-emoji="❤️" data-info="Score: 0.746 (Very Positive)">
+                            <span class="emoji-display">❤️</span>
+                            <span class="emoji-name">Tim</span>
+                        </div>
+                        <div class="guide-emoji-item positive-strong" data-emoji="😊" data-info="Score: 0.644 (Very Positive)">
+                            <span class="emoji-display">😊</span>
+                            <span class="emoji-name">Cười</span>
+                        </div>
+                    </div>
                 </div>
                 
-                <div class="emoticon-item" data-emoji=":))">
-                    <div class="emoji-display">:))</div>
-                    <div class="emoji-label">Cười vừa</div>
-                    <div class="emoji-tag">[cười_vừa]</div>
+                <div class="guide-category">
+                    <h3><i class="fas fa-smile"></i> TÍCH CỰC VỪA</h3>
+                    <div class="guide-emoji-list">
+                        <div class="guide-emoji-item positive-medium" data-emoji="😂" data-info="Score: 0.221 (Positive)">
+                            <span class="emoji-display">😂</span>
+                            <span class="emoji-name">Cười lớn</span>
+                        </div>
+                        <div class="guide-emoji-item positive-medium" data-emoji="👍" data-info="Score: ~0.5 (Positive)">
+                            <span class="emoji-display">👍</span>
+                            <span class="emoji-name">Like</span>
+                        </div>
+                        <div class="guide-emoji-item positive-medium" data-emoji="👏" data-info="Score: ~0.4 (Positive)">
+                            <span class="emoji-display">👏</span>
+                            <span class="emoji-name">Vỗ tay</span>
+                        </div>
+                    </div>
                 </div>
                 
-                <div class="emoticon-item" data-emoji=":)))">
-                    <div class="emoji-display">:)))</div>
-                    <div class="emoji-label">Cười mạnh</div>
-                    <div class="emoji-tag">[cười_mạnh]</div>
+                <div class="guide-category">
+                    <h3><i class="fas fa-frown"></i> TIÊU CỰC VỪA</h3>
+                    <div class="guide-emoji-list">
+                        <div class="guide-emoji-item negative-medium" data-emoji="😭" data-info="Score: -0.093 (Slightly Negative)">
+                            <span class="emoji-display">😭</span>
+                            <span class="emoji-name">Khóc</span>
+                        </div>
+                        <div class="guide-emoji-item negative-medium" data-emoji="😔" data-info="Score: ~-0.2 (Negative)">
+                            <span class="emoji-display">😔</span>
+                            <span class="emoji-name">Buồn</span>
+                        </div>
+                        <div class="guide-emoji-item negative-medium" data-emoji="👎" data-info="Score: ~-0.3 (Negative)">
+                            <span class="emoji-display">👎</span>
+                            <span class="emoji-name">Dislike</span>
+                        </div>
+                    </div>
                 </div>
                 
-                <div class="emoticon-item" data-emoji=":))))">
-                    <div class="emoji-display">:))))</div>
-                    <div class="emoji-label">Rất cười</div>
-                    <div class="emoji-tag">[rất_cười]</div>
+                <div class="guide-category">
+                    <h3><i class="fas fa-angry"></i> TIÊU CỰC MẠNH</h3>
+                    <div class="guide-emoji-list">
+                        <div class="guide-emoji-item negative-strong" data-emoji="😡" data-info="Score: ~-0.6 (Very Negative)">
+                            <span class="emoji-display">😡</span>
+                            <span class="emoji-name">Giận</span>
+                        </div>
+                        <div class="guide-emoji-item negative-strong" data-emoji="😠" data-info="Score: ~-0.5 (Negative)">
+                            <span class="emoji-display">😠</span>
+                            <span class="emoji-name">Tức giận</span>
+                        </div>
+                        <div class="guide-emoji-item negative-strong" data-emoji="💔" data-info="Score: ~-0.4 (Negative)">
+                            <span class="emoji-display">💔</span>
+                            <span class="emoji-name">Tim vỡ</span>
+                        </div>
+                    </div>
                 </div>
-                
-                <div class="emoticon-item" data-emoji=":(">
-                    <div class="emoji-display">:(</div>
-                    <div class="emoji-label">Buồn nhẹ</div>
-                    <div class="emoji-tag">[buồn_nhẹ]</div>
-                </div>
-                
-                <div class="emoticon-item" data-emoji=":((">
-                    <div class="emoji-display">:(</div>
-                    <div class="emoji-label">Buồn vừa</div>
-                    <div class="emoji-tag">[buồn_vừa]</div>
-                </div>
-                
-                <div class="emoticon-item" data-emoji="<3">
-                    <div class="emoji-display"><3</div>
-                    <div class="emoji-label">Tim nhẹ</div>
-                    <div class="emoji-tag">[tim_nhẹ]</div>
-                </div>
-                
-                <div class="emoticon-item" data-emoji="<333">
-                    <div class="emoji-display"><333</div>
-                    <div class="emoji-label">Tim mạnh</div>
-                    <div class="emoji-tag">[tim_mạnh]</div>
-                </div>
+            </div>
+            
+            <div class="guide-footer">
+                <p><i class="fas fa-info-circle"></i> Sentiment scores từ nghiên cứu khoa học, AI sẽ kết hợp với text để ra kết quả cuối</p>
             </div>
         </div>
 
@@ -443,26 +552,33 @@
                     </div>
                     <div class="brand-text">
                         <h3>SENTIMENT ANALYZER</h3>
-                        <p>Công nghệ phân tích cảm xúc tiên tiến</p>
+                        <p>Công nghệ phân tích cảm xúc tiên tiến với Emoji AI</p>
                     </div>
                 </div>
                 
                 <div class="footer-info">
                     <div class="info-item">
                         <i class="fas fa-microchip"></i>
-                        <span>Model: Logistic Regression với Emoticon AI</span>
+                        <span>Model: Logistic Regression với Text & Emoji AI Fusion</span>
                     </div>
                     <div class="info-item">
                         <i class="fas fa-database"></i>
-                        <span>Dữ liệu huấn luyện: <span id="trainingSamples">31,419</span> mẫu</span>
+                        <span>Dữ liệu huấn luyện: <span id="trainingSamples">Đang tải...</span> mẫu</span>
+                    </div>
+                    <div class="info-item">
+                        <i class="fas fa-smile"></i>
+                        <span>Emoji database: <span id="emojiCount">200+</span> emoji đã được gán nhãn</span>
                     </div>
                     <div class="info-item">
                         <i class="fas fa-bolt"></i>
-                        <span>Thời gian xử lý: < 1 giây</span>
+                        <span>Thời gian xử lý: < 1 giây (text + emoji)</span>
                     </div>
                 </div>
             </div>
             
+            <div class="footer-copyright">
+                <p>© 2025 AI Sentiment Analyzer - Công nghệ phân tích cảm xúc với Emoji AI</p>
+            </div>
         </div>
     </div>
 
@@ -472,8 +588,111 @@
         <div class="floating-2"><i class="fas fa-heart"></i></div>
         <div class="floating-3"><i class="fas fa-smile"></i></div>
         <div class="floating-4"><i class="fas fa-bolt"></i></div>
+        <div class="floating-5">😊</div>
+        <div class="floating-6">❤️</div>
+        <div class="floating-7">😂</div>
+        <div class="floating-8">😍</div>
     </div>
 
+    <!-- Emoji Info Tooltip -->
+    <div class="emoji-tooltip" id="emojiTooltip">
+        <div class="tooltip-content">
+            <div class="tooltip-emoji" id="tooltipEmoji">😊</div>
+            <div class="tooltip-info">
+                <h4 id="tooltipName">Cười</h4>
+                <p id="tooltipScore">Sentiment Score: <strong>0.644</strong></p>
+                <p id="tooltipLabel">Label: <strong class="positive-label">Tích cực mạnh</strong></p>
+            </div>
+        </div>
+        <div class="tooltip-arrow"></div>
+    </div>
+
+    <!-- Keyboard Shortcuts Guide Modal -->
+    <div class="shortcuts-modal" id="shortcutsModal">
+        <div class="shortcuts-modal-content">
+            <div class="shortcuts-modal-header">
+                <h2><i class="fas fa-keyboard"></i> PHÍM TẮT TRÊN WEBSITE</h2>
+                <button class="shortcuts-close" onclick="hideShortcuts()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <div class="shortcuts-grid">
+                <div class="shortcut-item">
+                    <div class="shortcut-key">
+                        <kbd>Ctrl</kbd> + <kbd>Enter</kbd>
+                    </div>
+                    <div class="shortcut-info">
+                        <h4>Phân tích nhanh</h4>
+                        <p>Phân tích bình luận hiện tại ngay lập tức</p>
+                    </div>
+                </div>
+                
+                <div class="shortcut-item">
+                    <div class="shortcut-key">
+                        <kbd>Alt</kbd> + <kbd>L</kbd>
+                    </div>
+                    <div class="shortcut-info">
+                        <h4>Focus vào ô nhập</h4>
+                        <p>Di chuyển con trỏ vào ô nhập bình luận</p>
+                    </div>
+                </div>
+                
+                <div class="shortcut-item">
+                    <div class="shortcut-key">
+                        <kbd>Alt</kbd> + <kbd>C</kbd>
+                    </div>
+                    <div class="shortcut-info">
+                        <h4>Xóa nội dung</h4>
+                        <p>Xóa toàn bộ nội dung trong ô nhập</p>
+                    </div>
+                </div>
+                
+                <div class="shortcut-item">
+                    <div class="shortcut-key">
+                        <kbd>Alt</kbd> + <kbd>E</kbd>
+                    </div>
+                    <div class="shortcut-info">
+                        <h4>Thêm emoji ngẫu nhiên</h4>
+                        <p>Thêm một emoji ngẫu nhiên vào ô nhập</p>
+                    </div>
+                </div>
+                
+                <div class="shortcut-item">
+                    <div class="shortcut-key">
+                        <kbd>Esc</kbd>
+                    </div>
+                    <div class="shortcut-info">
+                        <h4>Đóng/Ẩn thông báo</h4>
+                        <p>Đóng thông báo lỗi hoặc tooltip</p>
+                    </div>
+                </div>
+                
+                <div class="shortcut-item">
+                    <div class="shortcut-key">
+                        <kbd>?</kbd>
+                    </div>
+                    <div class="shortcut-info">
+                        <h4>Hiển thị phím tắt</h4>
+                        <p>Hiển thị hướng dẫn phím tắt này</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="shortcuts-footer">
+                <p><i class="fas fa-lightbulb"></i> Mẹo: Giữ phím <kbd>Alt</kbd> để xem các phím tắt có sẵn</p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Shortcuts Hint Button (nút to, nổi bật ở góc dưới phải) -->
+    <button class="shortcuts-hint-btn" onclick="showShortcuts()" title="Phím tắt (?)">
+        <i class="fas fa-keyboard"></i>
+        <span class="shortcuts-hint-text">PHÍM TẮT</span>
+    </button>
+
+
     <script src="/static/js/app.js"></script>
+
 </body>
 </html>

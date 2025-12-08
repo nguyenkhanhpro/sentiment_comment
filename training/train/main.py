@@ -8,7 +8,7 @@ sys.path.append(current_dir)
 def show_menu():
     """Hiển thị menu"""
     print("\n" + "=" * 70)
-    print("PHAN TICH CAM XUC VOI EMOJI & EMOTICON CUONG DO")
+    print("PHAN TICH CAM XUC")
     print("=" * 70)
     
     print("\nChon chuc nang:")

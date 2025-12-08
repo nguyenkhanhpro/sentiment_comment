@@ -22,7 +22,7 @@ class EmojiSentimentProcessor:
         """Tải dữ liệu emoji từ file CSV"""
         try:
             df = pd.read_csv(csv_path)
-            print(f"✅ Đã tải {len(df)} emoji từ: {csv_path}")
+            print(f" Đã tải {len(df)} emoji từ: {csv_path}")
             
             for _, row in df.iterrows():
                 emoji_char = str(row['emoji']).strip()
@@ -39,11 +39,11 @@ class EmojiSentimentProcessor:
                     self.emoji_to_score[variant] = score
                     self.emoji_to_label[variant] = label
             
-            print(f"📊 Tổng số emoji trong bộ nhớ: {len(self.emoji_to_score)}")
+            print(f" Tổng số emoji trong bộ nhớ: {len(self.emoji_to_score)}")
             
             # Thống kê
             label_counts = Counter(self.emoji_to_label.values())
-            print("📈 Phân bố sentiment:")
+            print(" Phân bố sentiment:")
             for label, count in label_counts.items():
                 label_name = {0: 'Tiêu cực', 1: 'Trung tính', 2: 'Tích cực'}[label]
                 print(f"  {label_name}: {count} emoji")
@@ -54,7 +54,7 @@ class EmojiSentimentProcessor:
             print(f"  Trọng số emoji trong model: {self.emoji_weight}")
             
         except Exception as e:
-            print(f"❌ Lỗi khi tải CSV: {e}")
+            print(f" Lỗi khi tải CSV: {e}")
             self.emoji_to_score = {}
             self.emoji_to_label = {}
     
@@ -336,7 +336,7 @@ if __name__ == "__main__":
     processor = EmojiSentimentProcessor('emoji_sentiment_labeled.csv', emoji_weight=0.3)
     
     # Test với các emoji cụ thể từ data của bạn
-    print("\n📊 Test các emoji từ file:")
+    print("\n Test các emoji từ file:")
     test_emojis = [
         ('😂', 0.221, 2),   # positive
         ('❤', 0.746, 2),    # very positive
@@ -358,7 +358,7 @@ if __name__ == "__main__":
               f"category={category} ({description}), weight={weight}")
     
     # Test với comments thực tế
-    print("\n🧪 Test với comments:")
+    print("\n Test với comments:")
     test_comments = [
         ("Sản phẩm tốt lắm! 😍❤️", 0.8),  # positive text + very positive emoji
         ("Rất thất vọng 😭", -0.6),       # negative text + slightly negative emoji
